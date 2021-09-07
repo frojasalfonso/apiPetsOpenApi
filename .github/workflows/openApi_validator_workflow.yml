@@ -1,0 +1,23 @@
+name: OpenApi validator
+on: push
+
+jobs:
+  open:
+    name: Validator
+    runs-on: [ ubuntu-latest ]
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Set up Java 8
+        uses: actions/setup-java@v2
+        with:
+          distribution: 'zulu' # See 'Supported distributions' for available options
+          java-version: '8'
+
+      - name: Download OpenApi Style Validator
+        run: |
+          wget https://repo1.maven.org/maven2/org/openapitools/openapistylevalidator/openapi-style-validator-cli/1.7/openapi-style-validator-cli-1.7-all.jar
+
+      - name: Validate OpenApi
+        run: |
+          java -jar openapi-style-validator-cli-1.7-all.jar -s rest/openApi/openapi-rest.yaml -o rest/openApi/options.json 
